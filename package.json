@@ -30,6 +30,7 @@
     "test": "vitest run",
     "test:type": "vitest typecheck",
     "test:watch": "vitest watch",
+    "typecheck": "pnpm tsc",
     "prepare": "husky install"
   },
   "dependencies": {
