@@ -4,6 +4,6 @@ import MyModule from '../'
 export default defineNuxtConfig({
   modules: [MyModule],
   yandexMetrika: {
-    id: 'qwe'
-  }
+    id: '49439650',
+  },
 })

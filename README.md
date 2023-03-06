@@ -31,8 +31,8 @@ Add it to a modules section of your nuxt config:
 
 ```js
 export default {
-  modules: ["@artmizu/nuxt-yandex-metrika"],
-};
+  modules: ['@artmizu/nuxt-yandex-metrika'],
+}
 ```
 
 ## Options
