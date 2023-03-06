@@ -17,20 +17,20 @@ Install package via a package manager:
 
 ```bash
 # using npm
-npm install --save-dev @artmizu/nuxt-yandex-metrika
+npm install --save-dev @artmizu/yandex-metrika-nuxt
 
 # using yarm
-yarn add -D @artmizu/nuxt-yandex-metrika
+yarn add -D @artmizu/yandex-metrika-nuxt
 
 # using pnpm
-pnpm add -D @artmizu/nuxt-yandex-metrika
+pnpm add -D @artmizu/yandex-metrika-nuxt
 ```
 
 Add it to a modules section of your nuxt config:
 
 ```js
 export default {
-  modules: ['@artmizu/nuxt-yandex-metrika'],
+  modules: ['@artmizu/yandex-metrika-nuxt'],
 }
 ```
 
