@@ -1,5 +1,4 @@
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/artmizu/nuxt-yandex-metrika/CI?label=CI&style=plastic)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/artmizu/nuxt-yandex-metrika/release-please?label=release&style=plastic)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/artmizu/nuxt-yandex-metrika/release.yml?branch=main)
 
 # Yandex Metrika integration for Nuxt 3
 
@@ -31,8 +30,8 @@ Add it to a modules section of your nuxt config:
 
 ```js
 export default {
-  modules: ["@artmizu/nuxt-yandex-metrika"],
-};
+  modules: ['@artmizu/nuxt-yandex-metrika'],
+}
 ```
 
 ## Options

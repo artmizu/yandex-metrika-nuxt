@@ -1,9 +1,9 @@
-import { resolve } from 'path'
+import { resolve } from 'node:path'
 import { defu } from 'defu'
 import { addPlugin, createResolver, defineNuxtModule, logger } from '@nuxt/kit'
+import type { NuxtModule } from 'nuxt/schema'
 import { name, version } from '../package.json'
 import type { MetrikaModuleParams } from './runtime/type'
-import { NuxtModule } from 'nuxt/schema'
 
 interface RuntimeConfig {
   yandexMetrika: Pick<MetrikaModuleParams, 'id'>
