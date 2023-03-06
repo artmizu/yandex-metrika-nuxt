@@ -4,7 +4,7 @@
 
 ## Features
 
-- Support Nuxt 3, for the nuxt 2 users check
+- Support Nuxt 3, nuxt 2 users can use
   [this one](https://github.com/artmizu/yandex-metrika-nuxt-2)
 - Prints handy mesages in a dev mode, when certain goals is reached
 - Expose useful methods to the nuxt app instance
