@@ -1,7 +1,7 @@
 import consola from 'consola'
 import { defineNuxtPlugin } from '#app'
 
-export default defineNuxtPlugin((ctx) => {
+export default defineNuxtPlugin(() => {
   return {
     provide: {
       metrika: {
@@ -11,7 +11,7 @@ export default defineNuxtPlugin((ctx) => {
         hit: (url: string) => {
           consola.info(`[yandex.metrika] hit on "${url}" on dev`)
         },
-      }
-    }
+      },
+    },
   }
 })

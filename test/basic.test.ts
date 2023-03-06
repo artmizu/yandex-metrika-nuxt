@@ -1,6 +1,6 @@
+import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import { $fetch, createPage, setup, useTestContext } from '@nuxt/test-utils'
-import { fileURLToPath } from 'node:url'
 
 describe('module tests', async () => {
   await setup({
@@ -31,14 +31,14 @@ describe('module tests', async () => {
     const page = await createPage('/?_ym_debug=1')
     const logs: string[] = []
     const { url } = useTestContext()
-    page.on('console', (msg) => logs.push(msg.text()))
+    page.on('console', msg => logs.push(msg.text()))
 
     await page.waitForEvent('console')
     await page.waitForEvent('console')
     await page.waitForEvent('console')
 
     expect(logs).toContain(`PageView. Counter 49439650. URL: ${url}/?_ym_debug=1. Referrer: `)
-    expect(logs).toContain(`PageView. Counter 49439650. URL: /?_ym_debug=1. Referrer: `)
+    expect(logs).toContain('PageView. Counter 49439650. URL: /?_ym_debug=1. Referrer: ')
     expect(logs).toContain('Reach goal. Counter: 49439650. Goal id: zzz')
 
     await page.click('#a')

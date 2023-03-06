@@ -1,6 +1,6 @@
 import { defineNuxtPlugin, useRouter, useRuntimeConfig } from '#app'
 
-export default defineNuxtPlugin((ctx) => {
+export default defineNuxtPlugin(() => {
   const id: string = useRuntimeConfig().public.yandexMetrika.id
   const router = useRouter()
 
@@ -17,7 +17,7 @@ export default defineNuxtPlugin((ctx) => {
         reachGoal: (identifyer: string) => {
           window.ym(id, 'reachGoal', identifyer)
         },
-      }
-    }
+      },
+    },
   }
 })
