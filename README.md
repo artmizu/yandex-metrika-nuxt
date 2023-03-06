@@ -1,6 +1,6 @@
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/artmizu/nuxt-yandex-metrika/release.yml?branch=main)
 
-# 🕵️ Yandex Metrika integration for Nuxt 3
+# 🕵️ [Yandex Metrika](https://metrica.yandex.com/) integration for Nuxt 3
 
 ## Features
 
