@@ -1,4 +1,4 @@
-import { defineNuxtPlugin, useRouter, useRuntimeConfig } from '#app'
+import { defineNuxtPlugin, useRouter, useRuntimeConfig } from 'nuxt/app'
 
 export default defineNuxtPlugin(() => {
   const id: string = useRuntimeConfig().public.yandexMetrika.id
