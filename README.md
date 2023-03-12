@@ -17,13 +17,13 @@ Install package via a package manager:
 
 ```bash
 # using npm
-npm install --save-dev @artmizu/yandex-metrika-nuxt
+npm install @artmizu/yandex-metrika-nuxt
 
 # using yarm
-yarn add -D @artmizu/yandex-metrika-nuxt
+yarn add @artmizu/yandex-metrika-nuxt
 
 # using pnpm
-pnpm add -D @artmizu/yandex-metrika-nuxt
+pnpm add @artmizu/yandex-metrika-nuxt
 ```
 
 Add it to a modules section of your nuxt config:
