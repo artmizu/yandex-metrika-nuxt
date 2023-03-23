@@ -23,6 +23,8 @@ describe('module tests', async () => {
   })
 
   it('script tag is injected with propper arguments', async () => {
+    // TODO
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const page = await $fetch('/')
     expect(page).toContain('ym("49439650", "init", {"defer":false,"clickmap":false,"trackLinks":true,"accurateTrackBounce":false,"webvisor":false,"ecommerce":false});')
   })
@@ -37,7 +39,7 @@ describe('module tests', async () => {
     await page.waitForEvent('console')
     await page.waitForEvent('console')
 
-    expect(logs).toContain(`PageView. Counter 49439650. URL: ${url}/?_ym_debug=1. Referrer: `)
+    expect(logs).toContain(`PageView. Counter 49439650. URL: ${url || ''}/?_ym_debug=1. Referrer: `)
     expect(logs).toContain('PageView. Counter 49439650. URL: /?_ym_debug=1. Referrer: ')
     expect(logs).toContain('Reach goal. Counter: 49439650. Goal id: zzz')
 

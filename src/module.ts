@@ -35,7 +35,7 @@ const module: NuxtModule<Omit<MetrikaModuleParams, 'id'>> = defineNuxtModule<Omi
       ecommerce: true,
     },
   },
-  async setup(options, nuxt) {
+  setup(options, nuxt) {
     const moduleOptions: MetrikaModuleParams = defu(
       nuxt.options.runtimeConfig.public.yandexMetrika,
       options,
@@ -43,7 +43,7 @@ const module: NuxtModule<Omit<MetrikaModuleParams, 'id'>> = defineNuxtModule<Omi
     nuxt.options.runtimeConfig.public.yandexMetrika = moduleOptions
 
     const resolver = createResolver(import.meta.url)
-    nuxt.options.build.transpile.push(await resolver.resolve('./runtime'))
+    nuxt.options.build.transpile.push(resolver.resolve('./runtime'))
 
     if (!nuxt.options.dev && ['production', 'test'].includes(process.env.NODE_ENV!)) {
       if (!isValid(moduleOptions)) {
