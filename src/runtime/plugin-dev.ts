@@ -1,4 +1,4 @@
-import consola from 'consola'
+import consola from 'consola/src/browser'
 import { defineNuxtPlugin } from '#app'
 
 export default defineNuxtPlugin(() => {
