@@ -17,6 +17,9 @@ export default defineNuxtPlugin(() => {
         reachGoal: (identifyer: string) => {
           window.ym(id, 'reachGoal', identifyer)
         },
+        userParams: (params: object) => {
+          window.ym(id, 'userParams', params)
+        },
       },
     },
   }
