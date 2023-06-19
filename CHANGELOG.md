@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/artmizu/yandex-metrika-nuxt/compare/v1.0.1...v1.0.2) (2023-06-19)
+
+
+### Bug Fixes
+
+* overload ts function, action types ([7699bab](https://github.com/artmizu/yandex-metrika-nuxt/commit/7699bab9e904a9083e80882ee984fcc6489f46ee))
+
 ## [1.0.1](https://github.com/artmizu/yandex-metrika-nuxt/compare/v1.0.0...v1.0.1) (2023-03-23)
 
 
