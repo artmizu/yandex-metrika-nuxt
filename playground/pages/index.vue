@@ -1,15 +1,14 @@
 <script lang="ts" setup>
+import type { VisitorParams } from '../../src/runtime/global'
 import { useNuxtApp } from '#app'
 import { ref } from '#imports'
-interface User {
-  name: string
-  surname: string
-}
-const user = ref<User>({} as User)
+
+const user = ref<VisitorParams>({} as VisitorParams)
 const ctx = useNuxtApp()
 if (process.client)
   ctx.$metrika.reachGoal('zzz')
 const sendUserParams = () => {
+  ctx.$metrika.hit('user', { params: { currency: 'RUB' }, title: 'user' })
   ctx.$metrika.userParams(user.value)
 }
 </script>

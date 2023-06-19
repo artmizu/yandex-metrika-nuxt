@@ -1,3 +1,4 @@
+import type { ActionParams, SubParams, VisitorParams } from './global'
 import { defineNuxtPlugin, useRouter, useRuntimeConfig } from '#app'
 
 export default defineNuxtPlugin(() => {
@@ -11,13 +12,13 @@ export default defineNuxtPlugin(() => {
   return {
     provide: {
       metrika: {
-        hit: (url: string) => {
-          window.ym(id, 'hit', url)
+        hit: (url: string, options?: SubParams) => {
+          window.ym(id, 'hit', url, options)
         },
-        reachGoal: (identifyer: string) => {
-          window.ym(id, 'reachGoal', identifyer)
+        reachGoal: (target: string, params?: ActionParams, callback?: () => void, ctx?: any) => {
+          window.ym(id, 'reachGoal', target, params, callback, ctx)
         },
-        userParams: (params: object) => {
+        userParams: (params: VisitorParams) => {
           window.ym(id, 'userParams', params)
         },
       },
