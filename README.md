@@ -46,3 +46,12 @@ config property `yandexMetrika`.
 - Description: Yandex metrika ID
 
 Other parameters you can see in the type file [here](src/runtime/type.ts)
+
+## Runtime Config
+
+Alternatively, leveraging [automatically replaced public runtime config values](https://nuxt.com/docs/api/configuration/nuxt-config#runtimeconfig) by matching environment variables at runtime, set your desired option in your project's `.env` file:
+
+```bash
+# Sets the `yandexMetrika.id` module option
+NUXT_PUBLIC_YANDEX_METRIKA_ID=12345678
+```
