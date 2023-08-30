@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.3](https://github.com/artmizu/yandex-metrika-nuxt/compare/v1.0.2...v1.0.3) (2023-08-30)
+
+
+### Bug Fixes
+
+* Added support for runtiveConfig from envs ([8c80626](https://github.com/artmizu/yandex-metrika-nuxt/commit/8c80626616f95a31e0873d3725b23956a4b445b1))
+* Remove unnecessary code from playground ([5352cb6](https://github.com/artmizu/yandex-metrika-nuxt/commit/5352cb699c82b813c8eeed7419c3746ad09c9176))
+
 ## [1.0.2](https://github.com/artmizu/yandex-metrika-nuxt/compare/v1.0.1...v1.0.2) (2023-06-19)
 
 
