@@ -14,7 +14,7 @@ export default defineNuxtPlugin(() => {
   // setting up script tag
   meta.script = meta.script || []
   meta.script.unshift({
-    id: 'metrika',
+    id: 'metrika-init',
     innerHTML: getScriptTag(moduleOptions),
   })
 
@@ -32,13 +32,7 @@ function isValid(options: Partial<MetrikaModuleParams>): options is MetrikaModul
 }
 
 function getScriptTag(options: MetrikaModuleParams) {
-  const libURL = !options.useCDN ? 'https://mc.yandex.ru/metrika/tag.js' : 'https://cdn.jsdelivr.net/npm/yandex-metrica-watch/tag.js'
   const metrikaContent = `
-    (function(m,e,t,r,i,k,a){
-    m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-    m[i].l=1*new Date();
-    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-    (window, document, "script", "${libURL}", "ym");
     ym("${options.id}", "init", ${JSON.stringify(options.initParams)});
   `
   return metrikaContent.trim()
