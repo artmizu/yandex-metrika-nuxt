@@ -1,7 +1,7 @@
 import { resolve } from 'node:path'
 import { defu } from 'defu'
 import { addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
-import type { NuxtModule } from 'nuxt/schema'
+import type { NuxtModule, NuxtPlugin } from 'nuxt/schema'
 import { name, version } from '../package.json'
 import type { MetrikaModuleParams } from './runtime/type'
 
@@ -45,14 +45,33 @@ const module: NuxtModule<Omit<MetrikaModuleParams, 'id'>> = defineNuxtModule<Omi
     const resolver = createResolver(import.meta.url)
     nuxt.options.build.transpile.push(resolver.resolve('./runtime'))
 
-    addPlugin({ src: resolve(__dirname, './runtime/serverPlugin'), mode: 'server' })
+    if (!nuxt.options.dev && ['production', 'test'].includes(process.env.NODE_ENV!)) {
+      // setting up script tag without initializing
+      nuxt.options.app.head.script = nuxt.options.app.head.script || []
+      nuxt.options.app.head.script.unshift({
+        id: 'metrika',
+        innerHTML: getScriptTag(moduleOptions),
+      })
 
-    if (!nuxt.options.dev && ['production', 'test'].includes(process.env.NODE_ENV!))
+      const headPluginMode: NuxtPlugin['mode'] = nuxt.options.ssr ? 'server' : 'client'
+      addPlugin({ src: resolve(__dirname, './runtime/serverPlugin'), mode: headPluginMode })
       addPlugin({ src: resolve(__dirname, './runtime/plugin'), mode: 'client' })
-
-    else if (options.verbose === true)
+    }
+    else if (options.verbose === true) {
       addPlugin({ src: resolve(__dirname, './runtime/plugin-dev'), mode: 'client' })
+    }
   },
 })
 
+function getScriptTag(options: MetrikaModuleParams) {
+  const libURL = !options.useCDN ? 'https://mc.yandex.ru/metrika/tag.js' : 'https://cdn.jsdelivr.net/npm/yandex-metrica-watch/tag.js'
+  const metrikaContent = `
+    (function(m,e,t,r,i,k,a){
+    m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();
+    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "${libURL}", "ym");
+  `
+  return metrikaContent.trim()
+}
 export default module
