@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/artmizu/yandex-metrika-nuxt/compare/v1.0.3...v1.0.4) (2023-08-31)
+
+
+### Bug Fixes
+
+* Fix initialize for non ssr mode, remove plugin in dev mode ([c38d75e](https://github.com/artmizu/yandex-metrika-nuxt/commit/c38d75e03ed45b26949fc6f396a677dd7577c6c3))
+
 ## [1.0.3](https://github.com/artmizu/yandex-metrika-nuxt/compare/v1.0.2...v1.0.3) (2023-08-30)
 
 
