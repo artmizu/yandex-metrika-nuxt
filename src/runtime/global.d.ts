@@ -4,6 +4,7 @@ declare global {
       (id: string, action: 'hit', url: string, options?: SubParams): void;
       (id: string, action: 'reachGoal', target: string, params?: ActionParams, callback?: ()=> void, ctx?: any): void;
       (id: string, action: "userParams", params: VisitorParams): void;
+      (id: string, action: "experiments", experiments: string): void;
     }
   }
 }
@@ -16,6 +17,7 @@ interface Metrika {
   hit: (url: string, options?: SubParams) => void
   reachGoal: (target: string, params?: ActionParams, callback?: () => void, ctx?: any) => void
   userParams: (params: VisitorParams) => void
+  experiments: (experiments: string) => void
 }
 
 export declare interface ActionParams {
