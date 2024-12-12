@@ -18,6 +18,9 @@ export default defineNuxtPlugin(() => {
           const paramsStr = JSON.stringify(params)
           consola.info(`[yandex.metrika] handle user params: ${paramsStr} on dev`)
         },
+        experiments: (experiments: string) => {
+          consola.info(`[yandex.metrika] handle user params: ${experiments} on dev`)
+        },
       },
     },
   }
