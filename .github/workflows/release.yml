@@ -28,7 +28,6 @@ jobs:
         with:
           node-version: 20.18.0
           registry-url: 'https://registry.npmjs.org'
-          cache: pnpm
         if: ${{ steps.release.outputs.release_created }}
 
       - run: pnpm install
