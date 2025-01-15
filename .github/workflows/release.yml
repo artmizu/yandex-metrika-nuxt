@@ -26,12 +26,12 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 20.18.0
           registry-url: 'https://registry.npmjs.org'
           cache: pnpm
         if: ${{ steps.release.outputs.release_created }}
 
-      - run: pnpm install --shamefully-hoist
+      - run: pnpm install
         if: ${{ steps.release.outputs.release_created }}
 
       - name: Prepare is needed, because it generate types
