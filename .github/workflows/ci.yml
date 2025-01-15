@@ -17,7 +17,7 @@ jobs:
       - name: Set node
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 20.18.0
           cache: pnpm
 
       - name: Install dependencies
@@ -40,7 +40,7 @@ jobs:
       - name: Set node
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 20.18.0
           cache: pnpm
 
       - name: Install dependencies
@@ -63,7 +63,7 @@ jobs:
       - name: Set node
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 20.18.0
           cache: pnpm
 
       - name: Install dependencies
