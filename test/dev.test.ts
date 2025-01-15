@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url'
-import { describe, expect, it } from 'vitest'
 import { $fetch, setup } from '@nuxt/test-utils'
+import { describe, expect, it } from 'vitest'
 
 describe('development mode tests', async () => {
   await setup({
@@ -24,8 +24,6 @@ describe('development mode tests', async () => {
   })
 
   it('script tag not injected in dev mode', async () => {
-    // TODO
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const page = await $fetch('/')
     expect(page).not.toContain('ym("49439650", "init",')
   })

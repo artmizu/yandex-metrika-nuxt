@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url'
-import { describe, expect, it } from 'vitest'
 import { $fetch, createPage, setup, useTestContext } from '@nuxt/test-utils'
+import { describe, expect, it } from 'vitest'
 
 describe('module tests', async () => {
   await setup({
@@ -23,8 +23,6 @@ describe('module tests', async () => {
   })
 
   it('script tag is injected with propper arguments', async () => {
-    // TODO
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const page = await $fetch('/')
     expect(page).toContain('ym("49439650", "init", {"defer":false,"clickmap":false,"trackLinks":true,"accurateTrackBounce":false,"webvisor":false,"ecommerce":false});')
   })
@@ -40,17 +38,19 @@ describe('module tests', async () => {
     await page.waitForEvent('console')
     await page.waitForEvent('console')
 
-    expect(logs).toContain(`PageView. Counter 49439650. URL: ${url || ''}/?_ym_debug=1. Referrer: `)
+    expect(logs).toContain(`PageView. Counter 49439650. URL: ${url || ''}?_ym_debug=1. Referrer: `)
     expect(logs).toContain('Form goal. Counter 49439650. Init.')
     expect(logs).toContain('PageView. Counter 49439650. URL: /?_ym_debug=1. Referrer: ')
     expect(logs).toContain('Reach goal. Counter: 49439650. Goal id: zzz')
 
+    const toAPage = page.waitForEvent('console')
     await page.click('#a')
-    await page.waitForEvent('console')
+    await toAPage
     expect(logs[4]).toEqual('PageView. Counter 49439650. URL: /a. Referrer: /?_ym_debug=1')
 
-    await page.click('#b')
+    const toBPage = page.click('#b')
     await page.waitForEvent('console')
+    await toBPage
     expect(logs[5]).toEqual('PageView. Counter 49439650. URL: /b. Referrer: /a')
   }, { timeout: 15000 })
 })

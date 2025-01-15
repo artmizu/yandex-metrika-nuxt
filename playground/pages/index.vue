@@ -7,7 +7,8 @@ const user = ref<VisitorParams>({} as VisitorParams)
 const ctx = useNuxtApp()
 if (process.client)
   ctx.$metrika.reachGoal('zzz')
-const sendUserParams = () => {
+
+function sendUserParams() {
   ctx.$metrika.hit('user', { params: { currency: 'RUB' }, title: 'user' })
   ctx.$metrika.userParams(user.value)
 }

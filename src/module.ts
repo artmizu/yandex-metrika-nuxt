@@ -1,19 +1,18 @@
-import { resolve } from 'node:path'
-import { defu } from 'defu'
-import { addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
-import type { NuxtModule, NuxtPlugin } from 'nuxt/schema'
-import { name, version } from '../package.json'
+import type { NuxtPlugin } from 'nuxt/schema'
 import type { MetrikaModuleParams } from './runtime/type'
+import { resolve } from 'node:path'
+import process from 'node:process'
+import { addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { defu } from 'defu'
+import { name, version } from '../package.json'
 
-interface RuntimeConfig {
+export interface ModuleOptions extends MetrikaModuleParams { }
+
+export interface ModulePublicRuntimeConfig {
   yandexMetrika: Pick<MetrikaModuleParams, 'id'>
 }
 
-export interface ModuleOptions extends MetrikaModuleParams { }
-export interface ModulePublicRuntimeConfig extends RuntimeConfig { }
-
-// immediate return via export default brings the build errors
-const module: NuxtModule<Omit<MetrikaModuleParams, 'id'>> = defineNuxtModule<Omit<MetrikaModuleParams, 'id'>>({
+export default defineNuxtModule({
   meta: {
     name,
     version,
@@ -23,6 +22,7 @@ const module: NuxtModule<Omit<MetrikaModuleParams, 'id'>> = defineNuxtModule<Omi
     },
   },
   defaults: {
+    id: '',
     noscript: true,
     useCDN: false,
     verbose: true,
@@ -36,7 +36,7 @@ const module: NuxtModule<Omit<MetrikaModuleParams, 'id'>> = defineNuxtModule<Omi
     },
   },
   setup(options, nuxt) {
-    const moduleOptions: MetrikaModuleParams = defu(
+    const moduleOptions = defu(
       nuxt.options.runtimeConfig.public.yandexMetrika,
       options,
     )
@@ -74,4 +74,3 @@ function getScriptTag(options: MetrikaModuleParams) {
   `
   return metrikaContent.trim()
 }
-export default module
