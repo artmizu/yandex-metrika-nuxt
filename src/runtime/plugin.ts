@@ -21,6 +21,9 @@ export default defineNuxtPlugin(() => {
         userParams: (params: VisitorParams) => {
           window.ym(id, 'userParams', params)
         },
+        experiments: (experiments: string) => {
+          window.ym(id, 'experiments', experiments)
+        },
       },
     },
   }

@@ -1,6 +1,6 @@
-import consola from 'consola/src/browser'
 import type { ActionParams, SubParams, VisitorParams } from './global'
 import { defineNuxtPlugin } from '#app'
+import { consola } from 'consola/browser'
 
 export default defineNuxtPlugin(() => {
   return {
@@ -17,6 +17,9 @@ export default defineNuxtPlugin(() => {
         userParams: (params: VisitorParams) => {
           const paramsStr = JSON.stringify(params)
           consola.info(`[yandex.metrika] handle user params: ${paramsStr} on dev`)
+        },
+        experiments: (experiments: string) => {
+          consola.info(`[yandex.metrika] handle user params: ${experiments} on dev`)
         },
       },
     },

@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url'
-import { describe, expect, it } from 'vitest'
 import { createPage, setup, useTestContext } from '@nuxt/test-utils'
+import { describe, expect, it } from 'vitest'
 
 describe('non-ssr mode tests', async () => {
   await setup({
@@ -44,17 +44,19 @@ describe('non-ssr mode tests', async () => {
     await page.waitForEvent('console')
     await page.waitForEvent('console')
 
-    expect(logs).toContain(`PageView. Counter 49439650. URL: ${url || ''}/?_ym_debug=1. Referrer: `)
+    expect(logs).toContain(`PageView. Counter 49439650. URL: ${url || ''}?_ym_debug=1. Referrer: `)
     expect(logs).toContain('Form goal. Counter 49439650. Init.')
     expect(logs).toContain('PageView. Counter 49439650. URL: /?_ym_debug=1. Referrer: ')
     expect(logs).toContain('Reach goal. Counter: 49439650. Goal id: zzz')
 
+    const toAPage = page.waitForEvent('console')
     await page.click('#a')
-    await page.waitForEvent('console')
+    await toAPage
     expect(logs[4]).toEqual('PageView. Counter 49439650. URL: /a. Referrer: /?_ym_debug=1')
 
-    await page.click('#b')
+    const toBPage = page.click('#b')
     await page.waitForEvent('console')
+    await toBPage
     expect(logs[5]).toEqual('PageView. Counter 49439650. URL: /b. Referrer: /a')
   }, { timeout: 15000 })
 })
