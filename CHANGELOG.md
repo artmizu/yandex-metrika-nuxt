@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/artmizu/yandex-metrika-nuxt/compare/v1.0.4...v1.1.0) (2025-01-15)
+
+
+### Features
+
+* Updated the Nuxt to 3.14+ version, added experiments feature of yandex.metrika ([0d2aaab](https://github.com/artmizu/yandex-metrika-nuxt/commit/0d2aaabfb4e1f8ceb9210ceeeff3a7d7198bbf3b))
+
 ## [1.0.4](https://github.com/artmizu/yandex-metrika-nuxt/compare/v1.0.3...v1.0.4) (2023-08-31)
 
 
