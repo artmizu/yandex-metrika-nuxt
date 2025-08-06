@@ -52,5 +52,5 @@ describe('module tests', async () => {
     await page.waitForEvent('console')
     await toBPage
     expect(logs[5]).toEqual('PageView. Counter 49439650. URL: /b. Referrer: /a')
-  }, { timeout: 15000 })
+  }, 15000)
 })
