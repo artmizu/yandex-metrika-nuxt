@@ -1,11 +1,10 @@
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/artmizu/nuxt-yandex-metrika/release.yml?branch=main)
 
-# 🕵️ [Yandex Metrika](https://metrica.yandex.com/) integration for Nuxt 3
+# 🕵️ [Yandex Metrika](https://metrica.yandex.com/) integration for Nuxt 3-4
 
 ## Features
 
-- Support Nuxt 3, nuxt 2 users can use
-  [this one](https://github.com/artmizu/yandex-metrika-nuxt-2)
+- Support Nuxt 4 and Nuxt 3, nuxt 2 users can use [this one](https://github.com/artmizu/yandex-metrika-nuxt-2)
 - Prints handy mesages in a dev mode, when certain goals is reached
 - Expose useful methods to the nuxt app instance
 - Fully customizable via runtime config

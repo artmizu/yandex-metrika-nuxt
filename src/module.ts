@@ -1,6 +1,5 @@
 import type { NuxtPlugin } from 'nuxt/schema'
 import type { MetrikaModuleParams } from './runtime/type'
-import { resolve } from 'node:path'
 import process from 'node:process'
 import { addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { defu } from 'defu'
@@ -12,13 +11,13 @@ export interface ModulePublicRuntimeConfig {
   yandexMetrika: Pick<MetrikaModuleParams, 'id'>
 }
 
-export default defineNuxtModule({
+export default defineNuxtModule<ModuleOptions>({
   meta: {
     name,
     version,
     configKey: 'yandexMetrika',
     compatibility: {
-      nuxt: '^3.0.0',
+      nuxt: '^3.0.0 || ^4.0.0',
     },
   },
   defaults: {
@@ -47,30 +46,27 @@ export default defineNuxtModule({
 
     if (!nuxt.options.dev && ['production', 'test'].includes(process.env.NODE_ENV!)) {
       // setting up script tag without initializing
-      nuxt.options.app.head.script = nuxt.options.app.head.script || []
+      nuxt.options.app.head ||= {}
+      nuxt.options.app.head.script ||= []
       nuxt.options.app.head.script.unshift({
         id: 'metrika',
         innerHTML: getScriptTag(moduleOptions),
       })
 
       const headPluginMode: NuxtPlugin['mode'] = nuxt.options.ssr ? 'server' : 'client'
-      addPlugin({ src: resolve(__dirname, './runtime/serverPlugin'), mode: headPluginMode })
-      addPlugin({ src: resolve(__dirname, './runtime/plugin'), mode: 'client' })
+      addPlugin({ src: resolver.resolve('./runtime/serverPlugin'), mode: headPluginMode })
+      addPlugin({ src: resolver.resolve('./runtime/plugin'), mode: 'client' })
     }
-    else if (options.verbose === true) {
-      addPlugin({ src: resolve(__dirname, './runtime/plugin-dev'), mode: 'client' })
+    else if (moduleOptions.verbose) {
+      addPlugin({ src: resolver.resolve('./runtime/plugin-dev'), mode: 'client' })
     }
   },
 })
 
 function getScriptTag(options: MetrikaModuleParams) {
-  const libURL = !options.useCDN ? 'https://mc.yandex.ru/metrika/tag.js' : 'https://cdn.jsdelivr.net/npm/yandex-metrica-watch/tag.js'
-  const metrikaContent = `
-    (function(m,e,t,r,i,k,a){
-    m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-    m[i].l=1*new Date();
-    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-    (window, document, "script", "${libURL}", "ym");
-  `
-  return metrikaContent.trim()
+  const libURL = options.useCDN
+    ? 'https://cdn.jsdelivr.net/npm/yandex-metrica-watch/tag.js'
+    : 'https://mc.yandex.ru/metrika/tag.js'
+
+  return `(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','${libURL}','ym');`.trim()
 }
