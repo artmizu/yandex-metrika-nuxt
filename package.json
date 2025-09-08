@@ -1,7 +1,7 @@
 {
   "name": "@artmizu/yandex-metrika-nuxt",
   "type": "module",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "packageManager": "pnpm@9.15.2",
   "description": "Yandex Metrika integration for Nuxt 3",
   "license": "MIT",

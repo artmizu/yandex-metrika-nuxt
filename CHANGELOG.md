@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/artmizu/yandex-metrika-nuxt/compare/v1.2.0...v1.2.1) (2025-09-08)
+
+
+### Bug Fixes
+
+* package.json config ([decb237](https://github.com/artmizu/yandex-metrika-nuxt/commit/decb237a220f07a9fd9a7247de3c341e769d3cd4))
+
 ## [1.2.0](https://github.com/artmizu/yandex-metrika-nuxt/compare/v1.1.0...v1.2.0) (2025-09-08)
 
 
