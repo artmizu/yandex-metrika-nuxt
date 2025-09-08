@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/artmizu/yandex-metrika-nuxt/compare/v1.1.0...v1.2.0) (2025-09-08)
+
+
+### Features
+
+* Added support for nuxt 4.x, updated dependencies ([4eb41b4](https://github.com/artmizu/yandex-metrika-nuxt/commit/4eb41b4612e39e98ddb4524d3cb792818770f9e2))
+* Added support for nuxt 4.x, updated dependencies ([7d95a92](https://github.com/artmizu/yandex-metrika-nuxt/commit/7d95a92379fa2a30793eae62b9694f24d3e31259))
+
 ## [1.1.0](https://github.com/artmizu/yandex-metrika-nuxt/compare/v1.0.4...v1.1.0) (2025-01-15)
 
 
