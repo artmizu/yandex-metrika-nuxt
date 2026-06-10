@@ -3,7 +3,7 @@ import { defineNuxtPlugin, useRouter, useRuntimeConfig } from '#app'
 import { useYandexMetrika } from './composables/useYandexMetrika'
 
 export default defineNuxtPlugin(() => {
-  const id: string = useRuntimeConfig().public.yandexMetrika.id
+  const id = useRuntimeConfig().public.yandexMetrika.id || ''
   const router = useRouter()
   const { enabled } = useYandexMetrika()
 

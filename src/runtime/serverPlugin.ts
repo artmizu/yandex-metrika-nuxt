@@ -4,7 +4,7 @@ import { defineNuxtPlugin, useHead, useRuntimeConfig } from '#app'
 import { isEnabled } from './utils'
 
 export default defineNuxtPlugin(() => {
-  const moduleOptions = useRuntimeConfig().public.yandexMetrika as Partial<MetrikaModuleParams>
+  const moduleOptions = useRuntimeConfig().public.yandexMetrika
   if (!isEnabled(moduleOptions))
     return
 
@@ -14,12 +14,21 @@ export default defineNuxtPlugin(() => {
     return
   }
 
+  if (import.meta.client) {
+    injectClientScripts(moduleOptions)
+    return
+  }
+
   const meta: MetaObject = {}
   // setting up script tag
   meta.script = meta.script || []
-  meta.script.unshift({
+  meta.script.push({
+    id: 'metrika',
+    innerHTML: getLoaderScriptTag(moduleOptions),
+  })
+  meta.script.push({
     id: 'metrika-init',
-    innerHTML: getScriptTag(moduleOptions),
+    innerHTML: getInitScriptTag(moduleOptions),
   })
 
   // setting up no-script tag
@@ -37,11 +46,28 @@ function isValid(options: Partial<MetrikaModuleParams>): options is MetrikaModul
   return !!options.id
 }
 
-function getScriptTag(options: MetrikaModuleParams) {
+function getLoaderScriptTag(options: MetrikaModuleParams) {
+  const libURL = options.useCDN
+    ? 'https://cdn.jsdelivr.net/npm/yandex-metrica-watch/tag.js'
+    : 'https://mc.yandex.ru/metrika/tag.js'
+
+  return `(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','${libURL}','ym');`.trim()
+}
+
+function getInitScriptTag(options: MetrikaModuleParams) {
   const metrikaContent = `
     ym("${options.id}", "init", ${JSON.stringify(options.initParams)});
   `
   return metrikaContent.trim()
+}
+
+function injectClientScripts(options: MetrikaModuleParams) {
+  const script = document.createElement('script')
+  script.id = 'metrika'
+  script.textContent = getLoaderScriptTag(options)
+  document.head.prepend(script)
+
+  window.ym(options.id, 'init', options.initParams)
 }
 
 function getNoscript(id: string) {

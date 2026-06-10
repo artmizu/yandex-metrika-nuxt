@@ -9,7 +9,7 @@ import { useYandexMetrika } from '../src/runtime/composables/useYandexMetrika'
  */
 test('check module types', () => {
   expectTypeOf<NuxtConfig['yandexMetrika']>().toMatchTypeOf<Partial<MetrikaModuleParams> | undefined>()
-  expectTypeOf<Pick<MetrikaModuleParams, 'enabled'>>().toMatchTypeOf<{ enabled?: boolean | 'true' | 'false' }>()
+  expectTypeOf<Pick<MetrikaModuleParams, 'enabled'>>().toMatchTypeOf<{ enabled?: boolean | 'true' | 'false' | null }>()
 })
 
 test('check composable types', () => {
