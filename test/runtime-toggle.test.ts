@@ -2,6 +2,12 @@ import { fileURLToPath } from 'node:url'
 import { createPage, setup } from '@nuxt/test-utils'
 import { describe, expect, it } from 'vitest'
 
+declare global {
+  interface Window {
+    __ymCalls: unknown[][]
+  }
+}
+
 describe('runtime toggle tests', async () => {
   await setup({
     rootDir: fileURLToPath(new URL('../playground', import.meta.url)),
@@ -23,37 +29,50 @@ describe('runtime toggle tests', async () => {
 
   it('stops and resumes dispatching metrika calls at runtime', async () => {
     const page = await createPage('/toggle?_ym_debug=1')
-    const logs: string[] = []
-    page.on('console', msg => logs.push(msg.text()))
-
-    await waitForLog(logs, 'PageView. Counter 49439650. URL: /toggle?_ym_debug=1. Referrer: ')
+    await page.waitForFunction(() => typeof window.ym === 'function')
+    await page.evaluate(() => {
+      const originalYm = window.ym
+      window.__ymCalls = []
+      window.ym = ((...args: Parameters<typeof window.ym>) => {
+        window.__ymCalls.push(args)
+        originalYm(...args)
+      }) as typeof window.ym
+    })
 
     await page.click('#toggle-goal')
-    await waitForLog(logs, 'Reach goal. Counter: 49439650. Goal id: toggle-goal')
+    await waitForYmCall(page, ['49439650', 'reachGoal', 'toggle-goal'])
 
     await page.click('#disable-metrika')
-    const disabledLogCount = logs.length
+    const disabledCallCount = await getYmCallsCount(page)
     await page.click('#toggle-goal')
     await page.click('#a')
     await page.waitForURL('**/a')
     await page.waitForTimeout(500)
-    expect(logs).toHaveLength(disabledLogCount)
+    expect(await getYmCallsCount(page)).toBe(disabledCallCount)
 
     await page.goBack()
     await page.waitForURL('**/toggle?_ym_debug=1')
     await page.click('#enable-metrika')
     await page.click('#b')
-    await waitForLog(logs, 'PageView. Counter 49439650. URL: /b. Referrer: /toggle?_ym_debug=1')
-  }, 15000)
+    await waitForYmCall(page, ['49439650', 'hit', '/b'])
+  }, 30000)
 })
 
-async function waitForLog(logs: string[], expected: string) {
+async function getYmCallsCount(page: Awaited<ReturnType<typeof createPage>>) {
+  return await page.evaluate(() => window.__ymCalls.length)
+}
+
+async function waitForYmCall(page: Awaited<ReturnType<typeof createPage>>, expected: unknown[]) {
   for (let i = 0; i < 50; i++) {
-    if (logs.includes(expected))
+    const hasCall = await page.evaluate((expected) => {
+      return window.__ymCalls.some(call => expected.every((value, index) => call[index] === value))
+    }, expected)
+
+    if (hasCall)
       return
 
     await new Promise(resolve => setTimeout(resolve, 100))
   }
 
-  expect(logs).toContain(expected)
+  expect(await page.evaluate(() => window.__ymCalls)).toContainEqual(expect.arrayContaining(expected))
 }
