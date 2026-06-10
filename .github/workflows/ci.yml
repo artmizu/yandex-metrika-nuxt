@@ -64,12 +64,13 @@ jobs:
           node-version: 22.13.1
 
       - name: Install dependencies
-        run: |
-          pnpm install
-          npx playwright install
+        run: pnpm install
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install chromium --with-deps --only-shell
 
       - name: Prepare is needed, because it generate types
         run: pnpm dev:prepare
 
       - name: Run tests
-        run: pnpm vitest run
+        run: pnpm test

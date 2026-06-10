@@ -1,9 +1,13 @@
 import type { MetaObject } from '@nuxt/schema'
 import type { MetrikaModuleParams } from '../runtime/type'
 import { defineNuxtPlugin, useHead, useRuntimeConfig } from '#app'
+import { isEnabled } from './utils'
 
 export default defineNuxtPlugin(() => {
-  const moduleOptions = useRuntimeConfig().public.yandexMetrika
+  const moduleOptions = useRuntimeConfig().public.yandexMetrika as Partial<MetrikaModuleParams>
+  if (!isEnabled(moduleOptions))
+    return
+
   if (!isValid(moduleOptions)) {
     // eslint-disable-next-line no-console
     console.log('[yandex.metrika] module cannot be initialized, please specify ID')
@@ -19,10 +23,12 @@ export default defineNuxtPlugin(() => {
   })
 
   // setting up no-script tag
-  meta.noscript = meta.noscript || []
-  meta.noscript.unshift({
-    innerHTML: getNoscript(moduleOptions.id),
-  })
+  if (moduleOptions.noscript) {
+    meta.noscript = meta.noscript || []
+    meta.noscript.unshift({
+      innerHTML: getNoscript(moduleOptions.id),
+    })
+  }
 
   useHead(meta)
 })

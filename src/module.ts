@@ -1,14 +1,15 @@
 import type { NuxtPlugin } from 'nuxt/schema'
 import type { MetrikaModuleParams } from './runtime/type'
 import process from 'node:process'
-import { addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addImportsDir, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { defu } from 'defu'
 import { name, version } from '../package.json'
+import { isEnabled } from './runtime/utils'
 
 export interface ModuleOptions extends MetrikaModuleParams { }
 
 export interface ModulePublicRuntimeConfig {
-  yandexMetrika: Pick<MetrikaModuleParams, 'id'>
+  yandexMetrika: Partial<MetrikaModuleParams>
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -22,6 +23,7 @@ export default defineNuxtModule<ModuleOptions>({
   },
   defaults: {
     id: '',
+    enabled: true,
     noscript: true,
     useCDN: false,
     verbose: true,
@@ -38,11 +40,15 @@ export default defineNuxtModule<ModuleOptions>({
     const moduleOptions = defu(
       nuxt.options.runtimeConfig.public.yandexMetrika,
       options,
-    )
-    nuxt.options.runtimeConfig.public.yandexMetrika = moduleOptions
+    ) as MetrikaModuleParams
+    ;(nuxt.options.runtimeConfig.public as ModulePublicRuntimeConfig).yandexMetrika = moduleOptions
 
     const resolver = createResolver(import.meta.url)
     nuxt.options.build.transpile.push(resolver.resolve('./runtime'))
+    addImportsDir(resolver.resolve('./runtime/composables'))
+
+    if (!isEnabled(moduleOptions))
+      return
 
     if (!nuxt.options.dev && ['production', 'test'].includes(process.env.NODE_ENV!)) {
       // setting up script tag without initializing

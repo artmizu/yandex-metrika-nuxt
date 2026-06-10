@@ -7,6 +7,7 @@
 - Support Nuxt 4 and Nuxt 3, nuxt 2 users can use [this one](https://github.com/artmizu/yandex-metrika-nuxt-2)
 - Prints handy mesages in a dev mode, when certain goals is reached
 - Expose useful methods to the nuxt app instance
+- Runtime enable/disable control for analytics dispatch
 - Fully customizable via runtime config
 - Types for external API
 
@@ -45,6 +46,34 @@ config property `yandexMetrika`.
 - Description: Yandex metrika ID
 
 Other parameters you can see in the type file [here](src/runtime/type.ts)
+
+### enabled
+
+- Type: `boolean`
+- Default: `true`
+- Description: Enables or disables script/plugin injection. Set it to `false` to disable Yandex Metrika completely.
+
+```js
+export default defineNuxtConfig({
+  yandexMetrika: {
+    id: '12345678',
+    enabled: process.env.APP_ENV === 'production',
+  },
+})
+```
+
+## Runtime Control
+
+Use `useYandexMetrika()` to stop or resume analytics dispatch after the module has been initialized.
+
+```vue
+<script setup>
+const { enable, disable, setEnabled, enabled } = useYandexMetrika()
+
+disable()
+setEnabled(true)
+</script>
+```
 
 ## Runtime Config
 
