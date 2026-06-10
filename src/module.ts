@@ -1,7 +1,7 @@
 import type { NuxtPlugin } from 'nuxt/schema'
 import type { MetrikaModuleParams } from './runtime/type'
 import process from 'node:process'
-import { addImportsDir, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addImports, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { defu } from 'defu'
 import { name, version } from '../package.json'
 import { isEnabled } from './runtime/utils'
@@ -45,7 +45,10 @@ export default defineNuxtModule<ModuleOptions>({
 
     const resolver = createResolver(import.meta.url)
     nuxt.options.build.transpile.push(resolver.resolve('./runtime'))
-    addImportsDir(resolver.resolve('./runtime/composables'))
+    addImports({
+      name: 'useYandexMetrika',
+      from: resolver.resolve('./runtime/composables/useYandexMetrika'),
+    })
 
     if (!isEnabled(moduleOptions))
       return

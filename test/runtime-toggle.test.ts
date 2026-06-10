@@ -1,5 +1,5 @@
 import { fileURLToPath } from 'node:url'
-import { createPage, setup } from '@nuxt/test-utils'
+import { createPage, setup, useTestContext } from '@nuxt/test-utils'
 import { describe, expect, it } from 'vitest'
 
 declare global {
@@ -28,16 +28,23 @@ describe('runtime toggle tests', async () => {
   })
 
   it('stops and resumes dispatching metrika calls at runtime', async () => {
-    const page = await createPage('/toggle?_ym_debug=1')
-    await page.waitForFunction(() => typeof window.ym === 'function')
-    await page.evaluate(() => {
-      const originalYm = window.ym
+    const page = await createPage()
+    const { url } = useTestContext()
+
+    await page.addInitScript(() => {
       window.__ymCalls = []
       window.ym = ((...args: Parameters<typeof window.ym>) => {
         window.__ymCalls.push(args)
-        originalYm(...args)
       }) as typeof window.ym
     })
+    await page.goto(new URL('/toggle?_ym_debug=1', url).toString(), { waitUntil: 'domcontentloaded', timeout: 10000 })
+    try {
+      await page.waitForSelector('#toggle-goal', { timeout: 10000 })
+    }
+    catch (error) {
+      const body = await page.locator('body').textContent({ timeout: 1000 }).catch(innerError => String(innerError))
+      throw new Error(`Could not render toggle page at ${page.url()}: ${body}`, { cause: error })
+    }
 
     await page.click('#toggle-goal')
     await waitForYmCall(page, ['49439650', 'reachGoal', 'toggle-goal'])

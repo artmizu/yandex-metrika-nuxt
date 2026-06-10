@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useNuxtApp } from '#app'
+import { useYandexMetrika } from '../../src/runtime/composables/useYandexMetrika'
 
 const { enable, disable } = useYandexMetrika()
 const { $metrika } = useNuxtApp()

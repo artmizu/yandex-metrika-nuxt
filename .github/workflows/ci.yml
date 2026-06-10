@@ -1,5 +1,8 @@
 name: CI
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   pull_request:
     branches:
@@ -17,7 +20,7 @@ jobs:
       - name: Set node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.13.1
+          node-version-file: .node-version
 
       - name: Install dependencies
         run: pnpm install
@@ -39,7 +42,7 @@ jobs:
       - name: Set node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.13.1
+          node-version-file: .node-version
 
       - name: Install dependencies
         run: pnpm install
@@ -61,7 +64,7 @@ jobs:
       - name: Set node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.13.1
+          node-version-file: .node-version
 
       - name: Install dependencies
         run: pnpm install
