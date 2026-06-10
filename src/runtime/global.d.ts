@@ -1,6 +1,9 @@
+import type { MetrikaModuleParams } from './type'
+
 declare global {
   interface Window {
     ym: {
+      (id: string, action: 'init', options?: MetrikaModuleParams['initParams']): void
       (id: string, action: 'hit', url: string, options?: SubParams): void
       (id: string, action: 'reachGoal', target: string, params?: ActionParams, callback?: () => void, ctx?: any): void
       (id: string, action: 'userParams', params: VisitorParams): void
@@ -36,6 +39,12 @@ export declare interface SubParams {
 declare module '#app' {
   interface NuxtApp {
     $metrika: Metrika
+  }
+}
+
+declare module 'nuxt/schema' {
+  interface PublicRuntimeConfig {
+    yandexMetrika: Partial<MetrikaModuleParams>
   }
 }
 

@@ -1,15 +1,11 @@
-import type { NuxtPlugin } from 'nuxt/schema'
 import type { MetrikaModuleParams } from './runtime/type'
 import process from 'node:process'
-import { addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addImports, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 import { defu } from 'defu'
 import { name, version } from '../package.json'
+import { isEnabled } from './runtime/utils'
 
 export interface ModuleOptions extends MetrikaModuleParams { }
-
-export interface ModulePublicRuntimeConfig {
-  yandexMetrika: Pick<MetrikaModuleParams, 'id'>
-}
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
@@ -22,6 +18,7 @@ export default defineNuxtModule<ModuleOptions>({
   },
   defaults: {
     id: '',
+    enabled: true,
     noscript: true,
     useCDN: false,
     verbose: true,
@@ -35,26 +32,24 @@ export default defineNuxtModule<ModuleOptions>({
     },
   },
   setup(options, nuxt) {
-    const moduleOptions = defu(
-      nuxt.options.runtimeConfig.public.yandexMetrika,
+    const moduleOptions = getModuleOptions(
+      nuxt.options.runtimeConfig.public.yandexMetrika || {},
       options,
     )
     nuxt.options.runtimeConfig.public.yandexMetrika = moduleOptions
 
     const resolver = createResolver(import.meta.url)
     nuxt.options.build.transpile.push(resolver.resolve('./runtime'))
+    addImports({
+      name: 'useYandexMetrika',
+      from: resolver.resolve('./runtime/composables/useYandexMetrika'),
+    })
+
+    if (!isEnabled(moduleOptions))
+      return
 
     if (!nuxt.options.dev && ['production', 'test'].includes(process.env.NODE_ENV!)) {
-      // setting up script tag without initializing
-      nuxt.options.app.head ||= {}
-      nuxt.options.app.head.script ||= []
-      nuxt.options.app.head.script.unshift({
-        id: 'metrika',
-        innerHTML: getScriptTag(moduleOptions),
-      })
-
-      const headPluginMode: NuxtPlugin['mode'] = nuxt.options.ssr ? 'server' : 'client'
-      addPlugin({ src: resolver.resolve('./runtime/serverPlugin'), mode: headPluginMode })
+      addPlugin({ src: resolver.resolve('./runtime/serverPlugin'), mode: nuxt.options.ssr ? 'server' : 'client' })
       addPlugin({ src: resolver.resolve('./runtime/plugin'), mode: 'client' })
     }
     else if (moduleOptions.verbose) {
@@ -63,10 +58,13 @@ export default defineNuxtModule<ModuleOptions>({
   },
 })
 
-function getScriptTag(options: MetrikaModuleParams) {
-  const libURL = options.useCDN
-    ? 'https://cdn.jsdelivr.net/npm/yandex-metrica-watch/tag.js'
-    : 'https://mc.yandex.ru/metrika/tag.js'
-
-  return `(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','${libURL}','ym');`.trim()
+function getModuleOptions(runtimeOptions: Partial<MetrikaModuleParams>, options: ModuleOptions): MetrikaModuleParams {
+  return {
+    id: runtimeOptions.id ?? options.id,
+    enabled: runtimeOptions.enabled ?? options.enabled,
+    noscript: runtimeOptions.noscript ?? options.noscript,
+    useCDN: runtimeOptions.useCDN ?? options.useCDN,
+    verbose: runtimeOptions.verbose ?? options.verbose,
+    initParams: defu(runtimeOptions.initParams, options.initParams),
+  }
 }

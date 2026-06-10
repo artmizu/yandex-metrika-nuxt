@@ -4,6 +4,11 @@ export interface MetrikaModuleParams {
    */
   id: string
   /**
+   * Enable or disable Yandex Metrika integration
+   * @default true
+   */
+  enabled?: boolean | 'true' | 'false' | null
+  /**
    * Enable noscript tag or disable it
    * @default true
    */

@@ -29,8 +29,8 @@
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
     "dev:start": "nuxi start playground",
     "lint": "eslint .",
-    "test": "vitest run",
-    "test:type": "vitest typecheck run --run",
+    "test": "vitest run --no-file-parallelism",
+    "test:type": "vitest --typecheck.only --run test/types.test-d.ts",
     "test:watch": "vitest watch",
     "typecheck": "pnpm tsc",
     "prepare": "husky"
@@ -51,7 +51,7 @@
     "eslint": "^9.32.0",
     "husky": "^9.1.7",
     "nuxt": "^4.0.3",
-    "playwright": "^1.54.2",
+    "playwright": "1.60.0",
     "typescript": "~5.9.2",
     "vitest": "^3.2.4",
     "vue-tsc": "^3.0.5"
