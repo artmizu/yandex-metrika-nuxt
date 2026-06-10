@@ -29,7 +29,7 @@
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
     "dev:start": "nuxi start playground",
     "lint": "eslint .",
-    "test": "pnpm exec playwright install chromium --only-shell && vitest run --no-file-parallelism",
+    "test": "vitest run --no-file-parallelism",
     "test:type": "vitest --typecheck.only --run test/types.test-d.ts",
     "test:watch": "vitest watch",
     "typecheck": "pnpm tsc",
